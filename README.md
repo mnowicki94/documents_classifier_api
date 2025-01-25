@@ -76,7 +76,7 @@ By following these steps, you ensure that anyone who clones your repository can 
 1. ** Execute in terminal 
     python app.py
 
-2. ** POST option --> via terminal (other window) any text you want to classify:
+2. ** POST option --> via terminal (other window - remember to have there conda env activated) any text you want to classify:
     curl -X POST \
     -H "Content-Type: application/json" \
     -d '{"headline":"medical procedures are aabout health"}' \
