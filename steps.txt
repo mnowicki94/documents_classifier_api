@@ -1,0 +1,12 @@
+1. perform EDA
+
+
+todo:
+
+- EDA
+- simple model
+- ogarnac co to za 2 pliki danych
+- serve api
+- foramtting / docstrings
+- pytest
+- logs

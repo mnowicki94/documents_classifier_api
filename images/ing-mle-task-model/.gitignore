@@ -1,0 +1,6 @@
+/input/newsCorpora.csv
+/.venv/
+/input/NewsAggregatorDataset.zip
+/logs
+/test.csv
+/output

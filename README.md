@@ -34,3 +34,27 @@ Performance of the final model is not a very important criterion for this exerci
 - The soundness and robustness of the solution and evaluation metrics.
 - The quality and clarity of the code. Your Python code should be well formatted and (for example) contain docstrings.
 - Considerations for possible next steps are also welcome (for example if there are things you would have liked to try if you had had more time).
+
+
+
+
+# Setting Up the Environment
+
+To create the Conda environment and install the required packages, follow these steps:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/mnowicki94/documents_classifier_api.git
+   cd https://github.com/mnowicki94/documents_classifier_api.git
+
+2. **Create the Conda Environment**:
+
+    conda env create -f environment.yml
+
+3. **Activate the Environment**:
+
+    conda activate ml_doc_classifier_env
+
+You should now have a reproducible environment set up and ready to use.
+
+By following these steps, you ensure that anyone who clones your repository can easily set up the same environment and work with your project.
