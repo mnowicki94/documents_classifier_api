@@ -11,7 +11,7 @@ pd.set_option("display.width", None)
 
 # Load the dataset
 file_path = "/Users/nom3wz/Documents/repos/documents_classifier/data/newsCorpora.csv"
-data = pd.read_csv(
+df = pd.read_csv(
     file_path,
     delimiter="\t",
     header=None,
@@ -36,22 +36,22 @@ print(data.head())
 
 # Summary statistics
 print("\nSummary Statistics:")
-print(data.describe(include="all"))
+print(df.describe(include="all"))
 
 # Check for missing values
 print("\nMissing Values:")
-print(data.isnull().sum())
+print(df.isnull().sum())
 
 # Distribution of categories
 plt.figure(figsize=(10, 6))
-sns.countplot(x="Category", data=data, order=data["Category"].value_counts().index)
+sns.countplot(x="Category", data=df, order=df["Category"].value_counts().index)
 plt.title("Distribution of News Categories")
 plt.xlabel("Category")
 plt.ylabel("Count")
 plt.show()
 
 # Distribution of publishers
-top_publishers = data["Publisher"].value_counts().head(10)
+top_publishers = df["Publisher"].value_counts().head(10)
 plt.figure(figsize=(10, 6))
 sns.barplot(x=top_publishers.index, y=top_publishers.values)
 plt.title("Top 10 Publishers")
@@ -61,10 +61,10 @@ plt.xticks(rotation=45)
 plt.show()
 
 # Distribution of articles over time
-data["Timestamp"] = pd.to_datetime(data["Timestamp"], unit="s")
-data["Year"] = data["Timestamp"].dt.year
+df["Timestamp"] = pd.to_datetime(df["Timestamp"], unit="s")
+df["Year"] = df["Timestamp"].dt.year
 plt.figure(figsize=(10, 6))
-sns.countplot(x="Year", data=data, order=data["Year"].value_counts().index)
+sns.countplot(x="Year", data=df, order=df["Year"].value_counts().index)
 plt.title("Distribution of Articles Over Time")
 plt.xlabel("Year")
 plt.ylabel("Count")

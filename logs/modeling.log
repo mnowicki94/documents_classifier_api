@@ -1,0 +1,7 @@
+2025-01-25 22:46:43,029 - INFO - Data loaded successfully from data/data_preprocessed.csv
+2025-01-25 22:46:43,029 - INFO - Starting text feature transformation
+2025-01-25 22:46:43,089 - INFO - Text columns concatenated
+2025-01-25 22:46:45,999 - INFO - TF-IDF vectorization completed
+2025-01-25 22:46:46,051 - INFO - Data split into training and testing sets
+2025-01-25 22:46:54,009 - INFO - Model trained successfully
+2025-01-25 22:46:54,017 - INFO - Predictions made on the test set

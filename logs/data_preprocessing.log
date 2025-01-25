@@ -1,0 +1,7 @@
+2025-01-25 22:42:15,243 - INFO - Loading dataset from /Users/nom3wz/Documents/repos/documents_classifier/data/newsCorpora.csv
+2025-01-25 22:42:16,139 - INFO - Checking for null values
+2025-01-25 22:42:16,167 - WARNING - Column Publisher has null values
+2025-01-25 22:42:16,191 - INFO - Filling null values in 'Publisher' column
+2025-01-25 22:42:16,229 - INFO - Cleaning text features
+2025-01-25 22:42:23,962 - INFO - Adding one-hot encoding
+2025-01-25 22:42:26,572 - INFO - Data preprocessing completed and saved to /Users/nom3wz/Documents/repos/documents_classifier/data/data_preprocessed.csv

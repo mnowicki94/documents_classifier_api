@@ -10,3 +10,5 @@ todo:
 - foramtting / docstrings
 - pytest
 - logs
+
+- test model with categoires Handle Imbalance - leanr more about those methods
