@@ -2,3 +2,7 @@
 /images
 /backlog
 /logs
+.*
+**__pycache__**
+**.DS_Store**
+**.vscode**
