@@ -1,4 +1,4 @@
-# Machine Learning Engineer Take-Home Exercise
+# Machine Learning Engineer Task - Document Classifier 
 
 ## Background
 We receive several million documents a year that need to be classified and distributed to the correct department. To speed up this process, we want to develop a machine learning model to classify documents automatically. Since we cannot share real data for this task, we use a substitute data set consisting of news headlines.
@@ -22,20 +22,6 @@ This dataset consists of the following columns, delimited by `\t`:
 - `hostname`: Hostname
 - `timestamp`: Timestamp
 
-Your model does not need to use all attributes. You are free to determine which ones to use and which to discard (using analysis or your own judgment). It’s also ok to take a data sample instead of using the entire data set.
-
-## Report
-- **Code**: You can include a notebook for your exploratory steps, but the final output should also include runnable Python code as a Python file or module.
-- **Presentation**: PowerPoint, etc.
-
-## Evaluation Criteria
-Performance of the final model is not a very important criterion for this exercise; we are more interested in:
-- The step-by-step approach and thought process.
-- The soundness and robustness of the solution and evaluation metrics.
-- The quality and clarity of the code. Your Python code should be well formatted and (for example) contain docstrings.
-- Considerations for possible next steps are also welcome (for example if there are things you would have liked to try if you had had more time).
-
-
 
 
 # Setting Up the Environment
@@ -58,3 +44,47 @@ To create the Conda environment and install the required packages, follow these 
 You should now have a reproducible environment set up and ready to use.
 
 By following these steps, you ensure that anyone who clones your repository can easily set up the same environment and work with your project.
+
+
+# Running whole pipeline
+
+1. ** in terminal:
+    chmod +x run_pipeline.sh
+    ./run_pipeline.sh
+
+2. ** in terminal: (insert your headline in quotes)
+    python classify_headline.py "medical procedures are about health and hollywood"
+
+
+
+# OR launch codes step by step:
+
+
+# 1. Run Data preprocessing for model training
+
+1. ** Execute in terminal 
+    python src/data_preprocessing.py
+
+# 2. Train model
+
+1. ** Execute in terminal 
+    python src/modeling.py
+
+
+# 3. Run API
+
+1. ** Execute in terminal 
+    python app.py
+
+2. ** POST option --> via terminal (other window) any text you want to classify:
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"headline":"medical procedures are aabout health"}' \
+    http://localhost:8000/predict
+
+3. ** GET option --> via browser - insert any text you want to classify at the end of link after ?:
+    http://0.0.0.0:8000/predict_get?headline=medical+procedures+are+about+health
+
+
+# Additiaonly you can run tests:
+    python -m pytest tests/ -vs

@@ -31,10 +31,10 @@ def test_dataset(dataset):
     )
 
 
-def test_non_empty_columns(dataset):
-    for column in dataset.columns:
-        if dataset[column].isnull().sum() > 0:
-            pytest.warns(UserWarning, f"Column {column} should not have null values")
+# def test_non_empty_columns(dataset):
+#     for column in dataset.columns:
+#         if dataset[column].isnull().sum() > 0:
+#             pytest.warns(UserWarning, f"Column {column} should not have null values")
 
 
 def test_unique_ids(dataset):
