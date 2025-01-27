@@ -99,12 +99,8 @@ if __name__ == "__main__":
     do_one_hot_encoding = False
 
     # File paths
-    file_path = (
-        "/Users/nom3wz/Documents/repos/documents_classifier/data/newsCorpora.csv"
-    )
-    output_path = (
-        "/Users/nom3wz/Documents/repos/documents_classifier/data/data_preprocessed.csv"
-    )
+    file_path = "data/newsCorpora.csv"
+    output_path = "data/data_preprocessed.csv"
 
     # Load dataset
     df = load_dataset(file_path)

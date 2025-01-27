@@ -4,9 +4,7 @@ import pytest
 
 @pytest.fixture(scope="module")
 def dataset():
-    file_path = (
-        "/Users/nom3wz/Documents/repos/documents_classifier/data/newsCorpora.csv"
-    )
+    file_path = "data/newsCorpora.csv"
     df = pd.read_csv(
         file_path,
         delimiter="\t",

@@ -11,7 +11,7 @@ import joblib  # Add this import
 
 
 # Setup logging
-log_folder = "/Users/nom3wz/Documents/repos/documents_classifier/logs"
+log_folder = "logs"
 os.makedirs(log_folder, exist_ok=True)
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
