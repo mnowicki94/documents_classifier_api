@@ -6,6 +6,7 @@ import uvicorn
 
 app = FastAPI()
 
+# import the model and the vectorizer
 model = joblib.load("models/model.pkl")
 tfidf_vectorizer = joblib.load("models/tfidf_vectorizer.pkl")
 
