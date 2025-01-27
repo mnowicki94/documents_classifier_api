@@ -25,5 +25,8 @@ jobs:
           wget https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip
           unzip NewsAggregatorDataset.zip -d data
 
+      - name: Run training
+        run: python ./run_training.py
+
       - name: Run tests
         run: python -m pytest tests/ -vs
