@@ -66,6 +66,51 @@ def load_dataset(file_path):
     return df
 
 
+def eda(df):
+    """
+    Perform exploratory data analysis on the dataset and log key insights.
+
+    Args:
+        df (pd.DataFrame): Dataset to analyze.
+    """
+    logging.info("Starting EDA...")
+
+    # Dataset Count Information
+    dataset_count = df["ID"].count()
+    logging.info("Dataset Count:\n%s", dataset_count)
+
+    # Check if all observations are unique
+    is_unique = df["ID"].is_unique
+    logging.info("Check if all observations are unique: %s", is_unique)
+
+    # Summary statistics for Timestamp
+    min_timestamp = pd.to_datetime(df["Timestamp"].min(), unit="ms")
+    max_timestamp = pd.to_datetime(df["Timestamp"].max(), unit="ms")
+    logging.info("Timestamp Summary:\nMin: %s\nMax: %s", min_timestamp, max_timestamp)
+
+    # Missing values
+    missing_values = df.isnull().sum()
+    logging.info("Missing Values:\n%s", missing_values)
+
+    # Data validation
+    assert df["Title"].dtype == object, "Title column should be of type object (text)"
+    assert df["Category"].dtype == object, (
+        "Category column should be of type object (text)"
+    )
+    assert set(df["Category"].unique()).issubset({"b", "t", "e", "m"}), (
+        "Category column should contain only 'b', 't', 'e', 'm'"
+    )
+    logging.info("Data validation checks passed.")
+
+    # Distribution of categories with percentages
+    category_counts = df["Category"].value_counts()
+    total_count = len(df)
+    category_percentages = (category_counts / total_count * 100).round(1)
+
+    for category, percentage in category_percentages.items():
+        logging.info("Category '%s': %s%%", category, percentage)
+
+
 def check_null_values(df):
     """
     Check for null values in the dataset and log warnings if any are found.
@@ -180,6 +225,9 @@ if __name__ == "__main__":
 
     # Load dataset
     df = load_dataset(input_path)
+
+    # Perform EDA
+    eda(df)
 
     # Check null values
     check_null_values(df)
