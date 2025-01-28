@@ -11,6 +11,6 @@
       "test_size": 0.2,
       "random_state": 42,
       "use_extra_cols": false,
-      "cols_to_vectorize": ["Title"]
+      "cols_to_vectorize": ["Title", "URL"]
     }
   }

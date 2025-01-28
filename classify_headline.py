@@ -9,7 +9,7 @@ def main():
         sys.exit(1)
 
     headline = " ".join(sys.argv[1:])
-    url = "http://localhost:8000/predict"
+    url = "http://localhost:80/predict"
     payload = {"headline": headline}
     response = requests.post(url, json=payload)
 

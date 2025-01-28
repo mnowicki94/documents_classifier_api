@@ -64,6 +64,8 @@ python -m venv env && source env/bin/activate && pip install -r requirements.txt
     python classify_headline.py "medical procedures are about health and hollywood"
 
  
+ chmod +x run/run_api.sh
+ run api
 
 # OR launch codes step by step:
 

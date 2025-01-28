@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-# 1. Launch API
-python app.py
+# Build the Docker image
+docker build -t documents_classifier_api .
+
+# Run the Docker container
+docker run -p 80:80 documents_classifier_api

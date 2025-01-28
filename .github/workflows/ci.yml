@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,4 +29,10 @@ jobs:
         run: ./run/run_model_training.sh
 
       - name: Run tests
-        run: python -m pytest tests/ -vs
+        run: docker run documents_classifier_api pytest tests/ -vs
+
+      - name: Build Docker image
+        run: ./run/run_api.sh
+
+      - name: Test API
+        run: python classify_headline.py 'computer science'
