@@ -24,6 +24,11 @@ This dataset consists of the following columns, delimited by `\t`:
 
 
 
+# Download data
+
+    wget https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip
+    unzip NewsAggregatorDataset.zip -d data
+
 # Setting Up the Environment via conda
 
 To create the Conda environment and install the required packages, follow these steps:
