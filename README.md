@@ -23,46 +23,47 @@ This dataset consists of the following columns, delimited by `\t`:
 - `timestamp`: Timestamp
 
 
-# 1.Clone the Repository:
+## 1.Clone the Repository:
 
-   git clone https://github.com/mnowicki94/documents_classifier_api.git
-   cd https://github.com/mnowicki94/documents_classifier_api.git
+    git clone https://github.com/mnowicki94/documents_classifier_api.git
+    cd https://github.com/mnowicki94/documents_classifier_api.git
 
-# 2. Download data
+## 2. Download data
 
     wget https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip
     unzip NewsAggregatorDataset.zip -d data
 
-# 3.a. Setting Up the Environment via venv(recommended)
+## 3 Setting Up the Environment
+### a. via venv (recommended)
 
     python3 -m venv env && source env/bin/activate && pip install -r requirements.txt
 
-# 3.b. Setting Up the Environment via conda
+### b. via conda
 
     conda env create -f environment.yml
     conda activate ml_doc_classifier_env
 
 
-# 4. Development
-## Run data_preprocessing.py and modeling.py via script below
+## 4. Development process: model training
+### Run data_preprocessing.py and modeling.py via script below
 
     chmod +x ./run/run_model_training.sh
     ./run/run_model_training.sh
 
 
-# 5. Production Environment: API Serving
-## 5.1 Run docker running container launching app.py that creates API that serves models from model training
+## 5. Production Environment: API Serving
+### a. Run docker running container launching app.py that creates API that serves models from model training
 
     chmod +x ./run/run_api.sh
     ./run/run_api.sh
 
-## 5.2 Run classify_headlines.py to use the API
+### b. Run classify_headlines.py to use the API
 
-### 5.2.1 write titles to classify in terminal (space between titels)
+#### b.a write titles to classify in terminal (space between titels)
     
     python classify_headlines.py "medical procedures are about health" "robots are coming"
 
-### 5.2.2 use titles to classify from file
+#### b.b. use titles to classify from file
     
     python classify_headlines.py --file titles_to_test.txt
 
