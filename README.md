@@ -47,7 +47,7 @@ By following these steps, you ensure that anyone who clones your repository can 
 
 # Setting Up the Environment via venv 
 
-python3 -m venv env && source env/bin/activate && pip install -r requirements.txt
+python -m venv env && source env/bin/activate && pip install -r requirements.txt
 
 # Running whole pipeline
 

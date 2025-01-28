@@ -4,7 +4,7 @@ import pytest
 
 @pytest.fixture(scope="module")
 def dataset():
-    df = pd.read_csv("data/data_preprocessed.csv", delimiter=";")
+    df = pd.read_csv("data/preprocessed_data.csv", delimiter=";")
     return df
 
 
