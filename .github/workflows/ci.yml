@@ -32,7 +32,13 @@ jobs:
         run: python -m pytest tests/ -vs
 
       - name: Build Docker image
-        run: ./run/run_api.sh
+        run: docker build -t documents_classifier_api .
 
       - name: Test API
-        run: python classify_headline.py 'computer science'
+        run: |
+          docker run -d -p 80:80 --name documents_classifier_api_container documents_classifier_api
+          sleep 10  # Wait for the API to start
+          docker ps  # List running containers for debugging
+          python classify_headline.py 'computer science'
+          docker stop documents_classifier_api_container
+          docker rm documents_classifier_api_container
