@@ -23,6 +23,8 @@ This dataset consists of the following columns, delimited by `\t`:
 - `timestamp`: Timestamp
 
 
+# Steps:
+
 ## 1.Clone the Repository:
 
     git clone https://github.com/mnowicki94/documents_classifier_api.git
