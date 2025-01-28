@@ -24,7 +24,7 @@ This dataset consists of the following columns, delimited by `\t`:
 
 
 
-# Setting Up the Environment
+# Setting Up the Environment via conda
 
 To create the Conda environment and install the required packages, follow these steps:
 
@@ -45,6 +45,9 @@ You should now have a reproducible environment set up and ready to use.
 
 By following these steps, you ensure that anyone who clones your repository can easily set up the same environment and work with your project.
 
+# Setting Up the Environment via venv 
+
+python3 -m venv env && source env/bin/activate && pip install -r requirements.txt
 
 # Running whole pipeline
 

@@ -7,8 +7,8 @@ from sklearn.metrics import classification_report
 import os
 from datetime import datetime
 from scipy.sparse import hstack, csr_matrix
-import joblib  # Add this import
-
+import joblib
+import json
 
 # Setup logging
 log_folder = "logs"
@@ -55,7 +55,7 @@ def transform_text_features(data, text_columns):
 
     # Save the vectorizer
     os.makedirs("models/", exist_ok=True)
-    joblib.dump(tfidf_vectorizer, "models/tfidf_vectorizer.pkl")
+    joblib.dump(tfidf_vectorizer, vectorizer_output_file)
     logging.info("Vectorizer saved")
 
     return tfidf_matrix
@@ -92,13 +92,20 @@ def add_other_cols_to_x(extra_cols):
 
 
 if __name__ == "__main__":
-    use_extra_cols = False
-    test_size = 0.2
-    random_state = 42
-    cols_to_vectorize = ["Title", "URL"]
+    config_path = "config.json"
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+
+    input_file = config["modeling"]["input_file"]
+    model_output_file = config["modeling"]["model_output_file"]
+    vectorizer_output_file = config["modeling"]["vectorizer_output_file"]
+    test_size = config["modeling"]["test_size"]
+    random_state = config["modeling"]["random_state"]
+    use_extra_cols = config["modeling"]["use_extra_cols"]
+    cols_to_vectorize = config["modeling"]["cols_to_vectorize"]
 
     # Load the dataset
-    df = pd.read_csv("data/data_preprocessed.csv", delimiter=";")
+    df = pd.read_csv(input_file, delimiter=";")
     logging.info("Data loaded successfully from data/data_preprocessed.csv")
 
     # Transform text features
@@ -109,6 +116,7 @@ if __name__ == "__main__":
     logging.info(f"use_extra_cols: {use_extra_cols}")
 
     if use_extra_cols:
+        print("Adding extra columns to the feature matrix")
         X_combined = add_other_cols_to_x(
             [
                 "Publisher_tech",
@@ -130,7 +138,10 @@ if __name__ == "__main__":
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
+        X,
+        y,
+        test_size=test_size,
+        random_state=random_state,
     )
     logging.info("Data split into training and testing sets")
     logging.info(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
@@ -142,7 +153,7 @@ if __name__ == "__main__":
     logging.info("Model trained successfully")
 
     # Save the trained model
-    model_filename = os.path.join("models/model.pkl")
+    model_filename = os.path.join(model_output_file)
     joblib.dump(model, model_filename)
     logging.info("Model saved")
 

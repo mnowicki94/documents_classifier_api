@@ -3,6 +3,7 @@ import re
 import logging
 import os
 from datetime import datetime
+import json
 
 # Setup logging
 os.makedirs("logs/", exist_ok=True)
@@ -96,14 +97,18 @@ def add_one_hot_encoding(df):
 
 
 if __name__ == "__main__":
-    do_one_hot_encoding = False
+    # Load configuration parameters
 
-    # File paths
-    file_path = "data/newsCorpora.csv"
-    output_path = "data/data_preprocessed.csv"
+    config_path = "config.json"
+    with open(config_path, "r") as config_file:
+        config = json.load(config_file)
+
+    input_path = config["data_preprocessing"]["input_file"]
+    output_file = config["data_preprocessing"]["output_file"]
+    do_one_hot_encoding = config["data_preprocessing"]["do_one_hot_encoding"]
 
     # Load dataset
-    df = load_dataset(file_path)
+    df = load_dataset(input_path)
 
     # Check null values
     check_null_values(df)
@@ -133,5 +138,5 @@ if __name__ == "__main__":
     logging.info(f"Final features: {df.columns}")
 
     # Save the preprocessed dataset to a CSV file
-    df.to_csv(output_path, index=False, sep=";")
+    df.to_csv(output_file, index=False, sep=";")
     logging.info("Data preprocessing completed and saved")
