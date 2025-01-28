@@ -124,14 +124,15 @@ if __name__ == "__main__":
     # Preprocess text features
     df = preprocess_text_features(df)
 
+    # leave only unique tokens in URL column
+    for col in ["Title", "Publisher"]:
+        df["URL"] = df.apply(
+            lambda row: get_unique_tokens(row["URL"], row[col]), axis=1
+        )
+
     logging.info(f"do_one_hot_encoding: {do_one_hot_encoding}")
 
     if do_one_hot_encoding:
-        # leave only unique tokens from URL
-        df["URL"] = df.apply(
-            lambda row: get_unique_tokens(row["URL"], row["Title"]), axis=1
-        )
-
         # Add one-hot encoding based on the Publisher and URL_uniques columns
         df = add_one_hot_encoding(df)
 

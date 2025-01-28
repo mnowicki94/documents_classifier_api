@@ -148,7 +148,9 @@ if __name__ == "__main__":
     logging.info(f"test_size: {test_size}, random_state: {random_state}")
 
     # Initialize and train the model
-    model = LogisticRegression(multi_class="multinomial", solver="lbfgs")
+    model = LogisticRegression(
+        multi_class="multinomial", solver="lbfgs", class_weight="balanced"
+    )
     model.fit(X_train, y_train)
     logging.info("Model trained successfully")
 
