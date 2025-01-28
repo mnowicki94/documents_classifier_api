@@ -1,8 +1,15 @@
+"""
+Author: Maciej Nowicki
+Date: 28.01.2025
+
+This script performs text classification using logistic regression. It includes functions for transforming text features using TF-IDF vectorization, adding additional columns to the feature matrix, and training and evaluating the model. The script also includes logging for tracking the progress and results of the modeling process. Additionally, grid search is used for hyperparameter tuning.
+"""
+
 import pandas as pd
 import logging
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
 import os
 from datetime import datetime
@@ -38,6 +45,7 @@ def transform_text_features(data, text_columns):
     Returns:
         scipy.sparse.csr_matrix: The transformed sparse matrix with TF-IDF features.
     """
+
     logging.info("Starting text feature transformation")
 
     # Concatenate the specified text columns into a single column
@@ -103,6 +111,8 @@ if __name__ == "__main__":
     random_state = config["modeling"]["random_state"]
     use_extra_cols = config["modeling"]["use_extra_cols"]
     cols_to_vectorize = config["modeling"]["cols_to_vectorize"]
+    do_grid_search = config["modeling"]["do_grid_search"]
+    c_param = config["modeling"]["c_param"]  # Regularization strength
 
     # Load the dataset
     df = pd.read_csv(input_file, delimiter=";")
@@ -147,20 +157,66 @@ if __name__ == "__main__":
     logging.info(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
     logging.info(f"test_size: {test_size}, random_state: {random_state}")
 
-    # Initialize and train the model
-    model = LogisticRegression(
-        multi_class="multinomial", solver="lbfgs", class_weight="balanced"
-    )
-    model.fit(X_train, y_train)
-    logging.info("Model trained successfully")
+    if do_grid_search:
+        logging.info("Starting grid search for hyperparameter tuning")
+        # Grid Search for Logistic Regression Hyperparameter Tuning
+        param_grid = {
+            "C": [1, 10],  # Regularization strength
+            "class_weight": [None, "balanced"],  # Class weighting options
+        }
+        logging.info(f"Starting grid search with parameters: {param_grid}")
 
-    # Save the trained model
-    model_filename = os.path.join(model_output_file)
-    joblib.dump(model, model_filename)
-    logging.info("Model saved")
+        grid_search = GridSearchCV(
+            LogisticRegression(multi_class="multinomial", max_iter=1000),
+            param_grid,
+            cv=2,  # 3-fold cross-validation
+            scoring="f1_weighted",
+            n_jobs=-1,
+            verbose=1,
+        )
+        grid_search.fit(X_train, y_train)
 
-    # Make predictions and print the classification report
-    y_pred = model.predict(X_test)
-    logging.info(
-        f"Predictions made on the test set {classification_report(y_test, y_pred)}"
-    )
+        # Log the best parameters and the best score
+        best_params = grid_search.best_params_
+        best_score = grid_search.best_score_
+        logging.info(f"Grid search completed. Best parameters: {best_params}")
+        logging.info(f"Best cross-validation score: {best_score}")
+
+        # Train the final model with the best parameters
+        best_model = grid_search.best_estimator_
+        logging.info("Training the final model with the best parameters")
+        best_model.fit(X_train, y_train)
+
+        # Save the trained model
+        model_filename = os.path.join(model_output_file)
+        joblib.dump(best_model, model_filename)
+        logging.info("Best model saved")
+
+        # Make predictions and print the classification report
+        y_pred = best_model.predict(X_test)
+        logging.info(
+            f"Predictions made on the test set {classification_report(y_test, y_pred)}"
+        )
+
+    else:
+        logging.info("Training the model with default hyperparameters")
+        # Train a logistic regression model
+        model = LogisticRegression(
+            multi_class="multinomial",
+            solver="lbfgs",
+            class_weight="balanced",
+            C=c_param,
+        )
+        model.fit(X_train, y_train)
+        logging.info("Model trained successfully")
+
+        # Save the trained model
+        model_filename = os.path.join(model_output_file)
+        joblib.dump(model, model_filename)
+        logging.info("Model saved")
+
+        # Make predictions and print the classification report
+        y_pred = model.predict(X_test)
+        logging.info(
+            f"Predictions made on the test set {classification_report(y_test, y_pred)}"
+        )

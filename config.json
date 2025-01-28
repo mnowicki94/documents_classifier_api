@@ -8,9 +8,11 @@
       "input_file": "data/preprocessed_data.csv",
       "model_output_file": "models/model.pkl",
       "vectorizer_output_file": "models/tfidf_vectorizer.pkl",
-      "test_size": 0.2,
+      "test_size": 0.3,
       "random_state": 42,
+      "c_param": 10,
       "use_extra_cols": false,
-      "cols_to_vectorize": ["Title", "URL"]
+      "cols_to_vectorize": ["Title", "URL"],
+      "do_grid_search": false
     }
   }

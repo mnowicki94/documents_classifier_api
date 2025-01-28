@@ -61,7 +61,11 @@ python -m venv env && source env/bin/activate && pip install -r requirements.txt
     ./run_pipeline.sh
 
 2. ** in terminal: (insert your headline in quotes)
-    python classify_headline.py "medical procedures are about health and hollywood"
+    python classify_headlines.py "medical procedures are about health and hollywood"
+
+    or 
+
+    python classify_headlines.py --file titles_to_test.txt
 
  
  chmod +x run/run_api.sh

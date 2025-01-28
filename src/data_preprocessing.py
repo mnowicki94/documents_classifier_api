@@ -1,9 +1,22 @@
+"""
+Author: Maciej Nowicki
+Date: 28.01.2025
+Summary: This script preprocesses a dataset by cleaning text features, handling null values, and optionally adding one-hot encoding.
+"""
+
 import pandas as pd
 import re
 import logging
 import os
 from datetime import datetime
 import json
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+from nltk import download
+
+# Ensure necessary NLTK resources are downloaded
+download("wordnet")
+download("omw-1.4")
 
 # Setup logging
 os.makedirs("logs/", exist_ok=True)
@@ -20,8 +33,20 @@ logging.basicConfig(
     ],
 )
 
+# Initialize the lemmatizer
+lemmatizer = WordNetLemmatizer()
+
 
 def load_dataset(file_path):
+    """
+    Load dataset from a given file path.
+
+    Args:
+        file_path (str): Path to the dataset file.
+
+    Returns:
+        pd.DataFrame: Loaded dataset.
+    """
     logging.info("Loading dataset from %s", file_path)
     df = pd.read_csv(
         file_path,
@@ -42,6 +67,12 @@ def load_dataset(file_path):
 
 
 def check_null_values(df):
+    """
+    Check for null values in the dataset and log warnings if any are found.
+
+    Args:
+        df (pd.DataFrame): Dataset to check for null values.
+    """
     logging.info("Checking for null values")
     for column in df.columns:
         if df[column].isnull().sum() > 0:
@@ -49,6 +80,15 @@ def check_null_values(df):
 
 
 def clean_text(text):
+    """
+    Clean and lemmatize text.
+
+    Args:
+        text (str): Text to clean.
+
+    Returns:
+        list: List of lemmatized tokens.
+    """
     # Convert to lowercase
     text = text.lower()
 
@@ -57,10 +97,22 @@ def clean_text(text):
 
     # Remove extra whitespaces
     tokens = text.split()
-    return tokens
+
+    # Apply lemmatization
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    return lemmatized_tokens
 
 
 def preprocess_text_features(df):
+    """
+    Clean text features in the dataset.
+
+    Args:
+        df (pd.DataFrame): Dataset to preprocess.
+
+    Returns:
+        pd.DataFrame: Preprocessed dataset.
+    """
     logging.info("Cleaning text features")
 
     # Clean URL column - delete http, https, www, .com, etc
@@ -82,10 +134,29 @@ def preprocess_text_features(df):
 
 
 def get_unique_tokens(url_tokens, title_tokens):
+    """
+    Get unique tokens from URL that are not in the title.
+
+    Args:
+        url_tokens (list): Tokens from the URL.
+        title_tokens (list): Tokens from the title.
+
+    Returns:
+        list: Unique tokens from the URL.
+    """
     return [token for token in url_tokens if token not in title_tokens]
 
 
 def add_one_hot_encoding(df):
+    """
+    Add one-hot encoding for specific keywords in the Publisher and URL columns.
+
+    Args:
+        df (pd.DataFrame): Dataset to add one-hot encoding to.
+
+    Returns:
+        pd.DataFrame: Dataset with one-hot encoding added.
+    """
     logging.info("Adding one-hot encoding")
     keywords = ["tech", "medical", "entertainment", "business"]
     for keyword in keywords:
@@ -124,7 +195,7 @@ if __name__ == "__main__":
     # Preprocess text features
     df = preprocess_text_features(df)
 
-    # leave only unique tokens in URL column
+    # Leave only unique tokens in URL column
     for col in ["Title", "Publisher"]:
         df["URL"] = df.apply(
             lambda row: get_unique_tokens(row["URL"], row[col]), axis=1
