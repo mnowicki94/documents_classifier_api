@@ -29,7 +29,7 @@ jobs:
         run: ./run/run_model_training.sh
 
       - name: Run tests
-        run: docker run documents_classifier_api pytest tests/ -vs
+        run: python -m pytest tests/ -vs
 
       - name: Build Docker image
         run: ./run/run_api.sh
