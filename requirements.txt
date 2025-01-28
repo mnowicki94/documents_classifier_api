@@ -9,3 +9,5 @@ seaborn==0.13.2
 matplotlib==3.7.2
 ipykernel==6.29.5
 requests==2.32.3
+nltk==3.9.1
+urllib3==1.26.20
