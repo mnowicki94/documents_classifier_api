@@ -1,34 +1,51 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import joblib
-import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import uvicorn
+from pydantic import BaseModel
+from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
 
-# import the model and the vectorizer
+# Load the model and vectorizer
 model = joblib.load("models/model.pkl")
 tfidf_vectorizer = joblib.load("models/tfidf_vectorizer.pkl")
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to my FastAPI app!"}
+@app.get("/", response_class=PlainTextResponse)
+async def root():
+    """Basic welcome message with API instructions"""
+    return """Welcome to the Documents Classifier API!
+
+Use the following endpoints:
+- GET  http://0.0.0.0/predict_get?headline=your_text
+- POST: via terminal:
+        - python classify_headlines.py "medical procedures are about health" "robots are coming"
+        - python classify_headlines.py --file titles_to_test.txt
+- API docs available at /docs
+"""
 
 
-# Add a GET-based route for quick browser testing
-@app.get("/predict_get")
+class HeadlineRequest(BaseModel):
+    """Request model for validation"""
+
+    headline: str
+
+
+@app.get("/predict_get", summary="Predict category (GET)")
 def predict_category_get(headline: str):
-    # Example: http://0.0.0.0:8000/predict_get?headline=some+text
+    """Predicts category from a given headline (GET request)"""
+    if not headline.strip():
+        raise HTTPException(status_code=400, detail="Headline cannot be empty.")
     X_new = tfidf_vectorizer.transform([headline])
     prediction = model.predict(X_new)[0]
     return {"category": prediction}
 
 
-@app.post("/predict")
-def predict_category(request: dict):
-    text = request.get("headline", "")
-    X_new = tfidf_vectorizer.transform([text])
+@app.post("/predict", summary="Predict category (POST)")
+def predict_category(request: HeadlineRequest):
+    """Predicts category from a given headline (POST request)"""
+    X_new = tfidf_vectorizer.transform([request.headline])
     prediction = model.predict(X_new)
     return {"category": prediction[0]}
 
