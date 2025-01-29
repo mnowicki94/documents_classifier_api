@@ -99,5 +99,5 @@ Make sure to have these tools installed and properly configured before proceedin
 
 ### c. Run via endpoint
 
-    http://0.0.0.0/predict_get?headline=your_text` → Predict category
+    http://0.0.0.0/predict_get?headline=your_text → Predict category
 
