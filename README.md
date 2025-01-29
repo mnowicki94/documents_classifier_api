@@ -1,13 +1,4 @@
-# Machine Learning Engineer Task - Document Classifier 
-
-## Background
-We receive several million documents a year that need to be classified and distributed to the correct department. To speed up this process, we want to develop a machine learning model to classify documents automatically. Since we cannot share real data for this task, we use a substitute data set consisting of news headlines.
-
-## Goal
-1. Build a predictive model to classify headlines into 4 categories (business, science and technology, entertainment, and health).
-2. Create a REST API to serve the model.
-3. Write an example script (Bash or Python) that uses the API from the command line.
-4. Prepare a presentation of your approach and results.
+# MLE Document Classifier 
 
 ## Data
 The news headlines data set can be found at: [News Aggregator Dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip)
@@ -21,7 +12,6 @@ This dataset consists of the following columns, delimited by `\t`:
 - `story`: Alphanumeric id of the cluster that includes news about the same story
 - `hostname`: Hostname
 - `timestamp`: Timestamp
-
 
 # Steps:
 
