@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-section {
+            margin-top: 20px;
+        }
+        input {
+            padding: 8px;
+            width: 70%;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        pre {
+            background: #eef;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+    <script>
+        async function classifyTitle() {
+            const title = document.getElementById("headline").value;
+            if (!title.trim()) {
+                alert("Please enter a headline!");
+                return;
+            }
+
+            const response = await fetch("/predict_form", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ "headline": title })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = "Predicted Category: " + data.category;
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to the Documents Classifier API!</h1>
+        <p>Use the following endpoints:</p>
+        <pre>
+- GET  <a href="/predict_get?headline=your_text">http://0.0.0.0/predict_get?headline=your_text</a>
+- POST: via terminal:
+    - python classify_headlines.py "medical procedures are about health" "robots are coming"
+    - python classify_headlines.py --file titles_to_test.txt
+- API docs available at <a href="/docs">/docs</a>
+- classes: m: medical; t: technology; e: entertainment; b: business</a>
+        </pre>
+
+        <h2>Try Classifying a Title:</h2>
+        <div class="input-section">
+            <input type="text" id="headline" placeholder="Enter your title here..." />
+            <button onclick="classifyTitle()">Classify</button>
+            <p id="result"></p>
+        </div>
+    </div>
+
+</body>
+</html>

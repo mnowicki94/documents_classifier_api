@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Form
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 import uvicorn
 from pydantic import BaseModel
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
@@ -11,19 +12,14 @@ app = FastAPI()
 model = joblib.load("models/model.pkl")
 tfidf_vectorizer = joblib.load("models/tfidf_vectorizer.pkl")
 
+# Set up templates for HTML rendering
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/", response_class=PlainTextResponse)
-async def root():
-    """Basic welcome message with API instructions"""
-    return """Welcome to the Documents Classifier API!
 
-Use the following endpoints:
-- GET  http://0.0.0.0/predict_get?headline=your_text
-- POST: via terminal:
-        - python classify_headlines.py "medical procedures are about health" "robots are coming"
-        - python classify_headlines.py --file titles_to_test.txt
-- API docs available at /docs
-"""
+@app.get("/", response_class=HTMLResponse)
+async def homepage(request: Request):
+    """Renders the main page with the input dialog."""
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 class HeadlineRequest(BaseModel):
@@ -48,6 +44,14 @@ def predict_category(request: HeadlineRequest):
     X_new = tfidf_vectorizer.transform([request.headline])
     prediction = model.predict(X_new)
     return {"category": prediction[0]}
+
+
+@app.post("/predict_form", summary="Predict category (from UI)")
+async def predict_category_form(headline: str = Form(...)):
+    """Handles the form submission and returns prediction."""
+    X_new = tfidf_vectorizer.transform([headline])
+    prediction = model.predict(X_new)[0]
+    return {"category": prediction}
 
 
 if __name__ == "__main__":
