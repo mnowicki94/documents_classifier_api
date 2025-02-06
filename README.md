@@ -1,6 +1,6 @@
 
 # MLE Document Classifier 
-![Document Classifier](images/document_classifier.png)
+![Document Classifier](images/ui_image.png)
 
 
 ## Data
