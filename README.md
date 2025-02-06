@@ -1,4 +1,7 @@
+
 # MLE Document Classifier 
+![Document Classifier](images/document_classifier.png)
+
 
 ## Data
 The news headlines data set can be found at: [News Aggregator Dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip)
