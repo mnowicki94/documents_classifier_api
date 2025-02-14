@@ -94,12 +94,12 @@ def eda(df):
 
     # Data validation
     assert df["Title"].dtype == object, "Title column should be of type object (text)"
-    assert df["Category"].dtype == object, (
-        "Category column should be of type object (text)"
-    )
-    assert set(df["Category"].unique()).issubset({"b", "t", "e", "m"}), (
-        "Category column should contain only 'b', 't', 'e', 'm'"
-    )
+    assert (
+        df["Category"].dtype == object
+    ), "Category column should be of type object (text)"
+    assert set(df["Category"].unique()).issubset(
+        {"b", "t", "e", "m"}
+    ), "Category column should contain only 'b', 't', 'e', 'm'"
     logging.info("Data validation checks passed.")
 
     # Distribution of categories with percentages
